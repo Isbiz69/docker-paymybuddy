@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS db_paymybuddy ;
+
 CREATE DATABASE db_paymybuddy;
 USE db_paymybuddy;
 
