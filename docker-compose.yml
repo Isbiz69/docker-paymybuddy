@@ -9,7 +9,10 @@ services:
       - registry_data:/var/lib/registry
 
   paymybuddy-db:
-    image: mysql:8.0
+    build:
+      context: .
+      target: database
+    image: localhost:5000/paymybuddy-db:1.0
     container_name: paymybuddy-db
     restart: unless-stopped
     environment:
@@ -18,7 +21,6 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./initdb:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
@@ -26,7 +28,9 @@ services:
       retries: 10
 
   paymybuddy-backend:
-    build: .
+    build:
+      context: .
+      target: backend
     image: localhost:5000/paymybuddy-backend:1.0
     container_name: paymybuddy-backend
     restart: unless-stopped
